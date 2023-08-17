@@ -1,10 +1,25 @@
 "use client";
-import { signIn } from "next-auth/react";
-import { FormEvent } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { FormEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 function Login() {
+  const { data: session, status } = useSession();
   const router = useRouter();
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      // Acessar a propriedade 'role' do objeto de sessão
+      const userRole = session?.user?.role as String;
+
+      // Verifique a role do usuário e redirecione com base nela
+      if (userRole === "ADMIN") {
+        router.push("/admin");
+      } else {
+        router.push("/user");
+      }
+    }
+  }, [status, session, router]);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();

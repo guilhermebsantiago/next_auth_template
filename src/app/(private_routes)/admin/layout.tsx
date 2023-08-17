@@ -28,7 +28,7 @@ export default async function PrivateLayout({ children }: Props) {
 
   if (!session?.user) redirect("/");
   const user: User = session.user;
-  if (user.role !== "ADMIN") redirect("/user");
+  if (user.role !== "ADMIN") redirect("/");
   return (
     <html lang="en">
       <body className={inter.className}>
